@@ -12,7 +12,7 @@
       :key="idx">
       <mu-card-media 
         :title="item.name"  
-        :subTitle="'by ' + item.artistName + ' ￥' + filterVal(item.score) + ' X' + item.num">
+        :subTitle="'by ' + item.artistName + ' ￥' + filterVal(item.score)">
         <img :src="item.cover" />
       </mu-card-media>
       <mu-card-text>
@@ -22,14 +22,14 @@
         <mu-icon-button>
           <mu-checkbox v-model="item.selected" @change="(e) => {item.selected = e;countPrice()}" uncheckIcon="favorite_border" checkedIcon="favorite"/>
         </mu-icon-button>
-        <mu-icon-button @click="changeNum('plus', item)">
-          +
+        <mu-icon-button icon="remove_circle_outline" @click="changeNum('sub', item)">
         </mu-icon-button>
-        <mu-icon-button v-show="item.num !== 1" @click="changeNum('sub', item)">
-          -
+        <mu-flat-button style="top: -6px;" :label="item.num">
+        </mu-flat-button>
+        <mu-icon-button icon="add_circle_outline" @click="changeNum('plus', item)">
         </mu-icon-button>
-        <mu-icon-button @click="() => {isDialog = true;deletedItem = item}" icon="close" style="float: right">
-        </mu-icon-button>
+        <mu-flat-button @click="() => {isDialog = true;deletedItem = item}" label="删除" style="float: right">
+        </mu-flat-button>
       </mu-card-actions>
     </mu-card>
   </div>
@@ -134,5 +134,11 @@ export default {
   display: block;
   text-align: center;
   margin-top: 30px
+}
+</style>
+
+<style>
+.mu-flat-button {
+  min-width: 20px;
 }
 </style>

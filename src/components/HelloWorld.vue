@@ -12,7 +12,7 @@
             <span slot="title">{{item.name}}</span>
             <span slot="subTitle">by <b>{{item.artistName}}</b> ￥{{item.score | totalPrice}}</span>
             <mu-icon-button @click="addShopCart(item)" slot="action">
-            <mu-icon value="star_border" :color="item.isAdd ? '#2196f3' : ''" />
+            <mu-icon value="shopping_cart" :color="item.isAdd ? '#ff5252' : ''" />
             </mu-icon-button>
           </mu-grid-tile>
         </mu-grid-list>

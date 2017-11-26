@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <mu-appbar :title="($route.path !== '/' ? (totalPrice === '￥0' ? '' : totalPrice) : '') + ' ' + mvsLen + '件'">
-      <mu-icon-button v-show="mvsLen !== 0" @click="deleteAllMvs" icon="close" slot="left"/>
+    <mu-appbar :title="($route.path !== '/' ? (totalPrice === '￥0' ? '' : totalPrice) : '已添加' + mvsLen + '件 ')">
+      <mu-flat-button v-show="mvsLen !== 0" @click="deleteAllMvs" label="清空购物车" slot="right"/>
       <mu-icon-button 
         v-show="$route.path !== '/'" 
-        @click="allPick" 
-        :icon="isAllPick ? 'favorite' : 'favorite_border'" 
-        slot="left"/>
+        @click="allPick"
+        slot="left">
+        <mu-icon :value="isAllPick ? 'favorite' : 'favorite_border'" :color="isAllPick ? '#ff5252' : '#FFF'"/>
+      </mu-icon-button>
     </mu-appbar>
       <div style="height: 56px" v-if="scrollTop > 56"></div>
       <mu-tabs :class="{ 'fixedTab' : scrollTop > 56 }" :value="$route.path === '/' ? 'tab1' : 'tab2' ">
-        <mu-tab @click="$router.push('/')" value="tab1" title="列表"/>
+        <mu-tab @click="$router.push('/')" value="tab1" title="商品"/>
         <mu-tab @click="$router.push('/shopcart')" value="tab2" title="购物车"/>
       </mu-tabs>
     <keep-alive>

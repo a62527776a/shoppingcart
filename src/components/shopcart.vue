@@ -1,0 +1,131 @@
+<template>
+  <div class="shopcart">
+    <mu-dialog :open="isDialog" title="警告" @close="isDialog = false">
+      确定要删除该物品？
+      <mu-flat-button slot="actions" @click="isDialog = false" primary label="取消"/>
+      <mu-flat-button slot="actions" primary @click="deleteMv()" label="确定"/>
+    </mu-dialog>
+    <mu-card 
+      v-for="(item, idx) in $root.$children[0].$children[2].mvs"
+      v-if="item.isAdd"
+      :key="idx">
+      <mu-card-media 
+        :title="item.name"  
+        :subTitle="'by ' + item.artistName + ' ￥' + filterVal(item.score) + ' X' + item.num">
+        <img :src="item.cover" />
+      </mu-card-media>
+      <mu-card-text>
+        {{item.briefDesc}}
+      </mu-card-text>
+      <mu-card-actions>
+        <mu-icon-button>
+          <mu-checkbox v-model="item.selected" @change="(e) => {item.selected = e;countPrice()}" uncheckIcon="favorite_border" checkedIcon="favorite"/>
+        </mu-icon-button>
+        <mu-icon-button @click="changeNum('plus', item)">
+          +
+        </mu-icon-button>
+        <mu-icon-button v-show="item.num !== 1" @click="changeNum('sub', item)">
+          -
+        </mu-icon-button>
+        <mu-icon-button @click="() => {isDialog = true;deletedItem = item}" icon="close" style="float: right">
+        </mu-icon-button>
+      </mu-card-actions>
+    </mu-card>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'shopcart',
+  data () {
+    return {
+      isDialog: false,
+      totalPrice: 0,
+      deletedItem: {}
+    }
+  },
+  methods: {
+    changeNum (action, item) {
+      if (action === 'plus') {
+        item.num++
+        this.$root.$children[0].mvsLen++
+      } else {
+        if (item.num === 1) return
+        item.num--
+        this.$root.$children[0].mvsLen--
+      }
+      if (item.selected) this.countPrice()
+    },
+    countPrice () {
+      let isAllPick = true
+      let len = 0
+      this.totalPrice = 0
+      this.$root.$children[0].$children[2].mvs.forEach((item, idx) => {
+        if (item.isAdd) len += item.num
+        if (item.isAdd && !item.selected) isAllPick = false
+        if (item.isAdd && item.selected) {
+          this.totalPrice += item.num * item.score
+        }
+      })
+      this.$root.$children[0].totalPrice = '￥' + this.filterVal(this.totalPrice)
+      this.$root.$children[0].mvsLen = len
+      len === 0 ? this.$root.$children[0].isAllPick = false : this.$root.$children[0].isAllPick = isAllPick
+    },
+    deleteAllMvs () {
+      this.$root.$children[0].$children[2].mvs.forEach((item, idx) => {
+        item.isAdd = false
+        item.selected = false
+        item.num = 0
+      })
+      this.$root.$children[0].totalPrice = '￥0'
+    },
+    allPick (isAllPick) {
+      this.$root.$children[0].$children[2].mvs.forEach((item, idx) => {
+        if (item.isAdd) {
+          item.selected = isAllPick
+        }
+      })
+      isAllPick ? this.countPrice() : this.$root.$children[0].totalPrice = '￥0'
+    },
+    deleteMv () {
+      this.deletedItem.isAdd = false
+      this.deletedItem.selected = false
+      this.deletedItem.num = 0
+      this.isDialog = false
+      this.countPrice()
+    },
+    filterVal (data) {
+      if (!data || data === '' || data === '0' || data === 0) return 0
+      let isFixed = false
+      if (data.toString().indexOf('.') > -1) isFixed = true
+      let newData = data.toString()
+      let dataArray = data.toString().split('')
+      let dataArrayLen = isFixed ? dataArray.length - 6 : dataArray.length - 3
+      if (dataArrayLen > 0) {
+        let priceFormat = (data) => {
+          dataArray.splice(dataArrayLen, 0, ',')
+          dataArrayLen = dataArrayLen - 3
+          if (dataArrayLen < 1) {
+            newData = dataArray.join('')
+            return
+          }
+          priceFormat(newData)
+        }
+        priceFormat(data)
+      }
+      return (newData)
+    }
+  },
+  activated () {
+    this.countPrice()
+  },
+  created () {
+
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="less" scoped>
+
+</style>

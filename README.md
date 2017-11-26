@@ -1,30 +1,29 @@
 # shoppingcart
 
-> A Vue.js project
+## 实现功能 
 
-## Build Setup
+1. 下拉刷新
+2. 上拉加载
+3. 图片懒加载
+4. 选中商品价格实时变化
+5. 全选/全不选
+6. 商品全部/单个删除
+7. reload数据不清空
 
-``` bash
-# install dependencies
-npm install
+## 数据来源 
 
-# serve with hot reload at localhost:8080
-npm run dev
+[网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
+```
+$ git clone https://github.com/Binaryify/NeteaseCloudMusicApi
+$ cd NeteaseCloudMusicApi && npm install
+$ npm run start
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 安装 && 运行
+
+```
+$ git clone https://github.com/a62527776a/shoppingcart.git
+$ cd shoppingcart && npm install
+$ npm run dev
+```

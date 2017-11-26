@@ -16,7 +16,7 @@
             </mu-icon-button>
           </mu-grid-tile>
         </mu-grid-list>
-        <!--<mu-infinite-scroll :scroller="mvsEl" loadingText="" :loading="loading" @load="loadMore" /> -->    
+        <mu-infinite-scroll :scroller="window" loadingText="" :loading="loading" @load="loadMore" />
     </div>
   </div>
 </template>
@@ -35,40 +35,59 @@ export default {
       mvsEl: null,
       scrollTop: 0,
       isReload: false,
-      clientHeight: 0
+      clientHeight: 0,
+      window: null
     }
   },
   methods: {
     findMvs () {
       this.refreshing = true
       this.offset = 1
-      this.baseService.get(`/top/mv?limit=20`).then((res) => {
-        this.isReload = true
-        res.data.forEach((item, idx) => {
-          item.scrollTop = 0
-          idx > 5 ? item.isShow = false : item.isShow = true
-          item.isAdd = false
-          item.num = 0
+      let storeMvs = JSON.parse(localStorage.getItem('mvs'))
+      if (storeMvs && storeMvs.length > 100) {
+        localStorage.clear()
+      }
+      if (storeMvs) {
+        storeMvs.forEach((item, idx) => {
+          if (item.isAdd) this.$root.$children[0].mvsLen += item.num
           item.selected = false
         })
+        this.isReload = true
         setTimeout(() => {
           this.isReload = false
         }, 100)
-        this.mvs = res.data
-        this.$nextTick(() => {
-          this.$refs.imgs.forEach((item, idx) => {
-            this.mvs[idx].scrollTop = item.$el.offsetTop
+        this.mvs = storeMvs
+        this.refreshing = false
+      } else {
+        this.baseService.get(`/top/mv?limit=20`).then((res) => {
+          this.isReload = true
+          res.data.forEach((item, idx) => {
+            item.scrollTop = 0
+            idx > 5 ? item.isShow = false : item.isShow = true
+            item.isAdd = false
+            item.num = 0
+            item.selected = false
           })
+          setTimeout(() => {
+            this.isReload = false
+          }, 100)
+          this.mvs = res.data
+          this.$nextTick(() => {
+            this.$refs.imgs.forEach((item, idx) => {
+              this.mvs[idx].scrollTop = item.$el.offsetTop
+            })
+          })
+          this.refreshing = false
+        }).catch((e) => {
+          this.refreshing = false
         })
-        this.refreshing = false
-      }).catch((e) => {
-        this.refreshing = false
-      })
+      }
     },
     addShopCart (item) {
       this.$root.$children[0].mvsLen++
       item.isAdd = true
       item.num++
+      localStorage.setItem('mvs', JSON.stringify(this.mvs))
     },
     loadMore () {
       this.loading = true
@@ -77,6 +96,9 @@ export default {
         res.data.forEach((item, idx) => {
           item.scrollTop = 0
           item.isShow = false
+          item.isAdd = false
+          item.num = 0
+          item.selected = false
         })
         this.mvs = this.mvs.concat(res.data)
         this.$nextTick(() => {
@@ -91,6 +113,7 @@ export default {
     },
     refresh () {
       this.findMvs()
+      this.$root.$children[0].mvsLen = 0
     }
   },
   filters: {
@@ -121,6 +144,7 @@ export default {
   created () {
     this.findMvs()
     this.clientHeight = document.documentElement.clientHeight
+    this.window = window
   },
   mounted () {
     this.mvsEl = this.$refs.mvs_list

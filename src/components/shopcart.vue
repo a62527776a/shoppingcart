@@ -5,6 +5,7 @@
       <mu-flat-button slot="actions" @click="isDialog = false" primary label="取消"/>
       <mu-flat-button slot="actions" primary @click="deleteMv()" label="确定"/>
     </mu-dialog>
+    <a class="tip" v-show="this.$root.$children[0].mvsLen === 0">购物车没有东西，请到列表挑选</a>
     <mu-card 
       v-for="(item, idx) in $root.$children[0].$children[2].mvs"
       v-if="item.isAdd"
@@ -54,7 +55,7 @@ export default {
         item.num--
         this.$root.$children[0].mvsLen--
       }
-      if (item.selected) this.countPrice()
+      item.selected ? this.countPrice() : localStorage.setItem('mvs', JSON.stringify(this.$root.$children[0].$children[2].mvs))
     },
     countPrice () {
       let isAllPick = true
@@ -70,6 +71,7 @@ export default {
       this.$root.$children[0].totalPrice = '￥' + this.filterVal(this.totalPrice)
       this.$root.$children[0].mvsLen = len
       len === 0 ? this.$root.$children[0].isAllPick = false : this.$root.$children[0].isAllPick = isAllPick
+      localStorage.setItem('mvs', JSON.stringify(this.$root.$children[0].$children[2].mvs))
     },
     deleteAllMvs () {
       this.$root.$children[0].$children[2].mvs.forEach((item, idx) => {
@@ -78,6 +80,7 @@ export default {
         item.num = 0
       })
       this.$root.$children[0].totalPrice = '￥0'
+      localStorage.setItem('mvs', JSON.stringify(this.$root.$children[0].$children[2].mvs))
     },
     allPick (isAllPick) {
       this.$root.$children[0].$children[2].mvs.forEach((item, idx) => {
@@ -127,5 +130,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
-
+.tip {
+  display: block;
+  text-align: center;
+  margin-top: 30px
+}
 </style>

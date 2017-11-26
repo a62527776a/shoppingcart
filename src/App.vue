@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <mu-appbar :title="($route.path !== '/' ? (totalPrice === '￥0' ? '' : totalPrice) : '') + ' ' + mvsLen + '件'">
-      <mu-icon-button @click="deleteAllMvs" icon="close" slot="left"/>
+      <mu-icon-button v-show="mvsLen !== 0" @click="deleteAllMvs" icon="close" slot="left"/>
       <mu-icon-button 
         v-show="$route.path !== '/'" 
         @click="allPick" 
@@ -48,6 +48,7 @@ export default {
     },
     deleteAllMvs () {
       this.isAllPick = false
+      this.mvsLen = 0
       if (this.$refs.component.mvs) {
         this.$refs.component.mvs.forEach((item) => {
           item.isAdd = false
@@ -55,11 +56,14 @@ export default {
           item.num = 0
         })
         this.totalPrice = '￥0'
-        this.mvsLen = 0
+        localStorage.setItem('mvs', JSON.stringify(this.$refs.component.mvs))
       } else {
         this.$refs.component.deleteAllMvs()
       }
     }
+  },
+  created () {
+    this.$router.push('/')
   },
   mounted () {
     this.fixedTab()

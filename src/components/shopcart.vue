@@ -21,11 +21,10 @@
       <mu-card-actions>
         <mu-icon-button>
           <mu-checkbox v-model="item.selected" @change="(e) => {item.selected = e;countPrice()}" uncheckIcon="favorite_border" checkedIcon="favorite"/>
-        </mu-icon-button>商品全部/单个删除
-
+        </mu-icon-button>
         <mu-icon-button icon="remove_circle_outline" @click="changeNum('sub', item)">
         </mu-icon-button>
-        <mu-flat-button style="top: -6px;" :label="item.num">
+        <mu-flat-button style="top: -6px;" :label="item.num.toString()">
         </mu-flat-button>
         <mu-icon-button icon="add_circle_outline" @click="changeNum('plus', item)">
         </mu-icon-button>

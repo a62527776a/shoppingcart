@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import MuseUI from 'muse-ui'
+import store from './store'
 
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-carbon.css'
@@ -19,6 +20,7 @@ Vue.prototype.baseService = baseService
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

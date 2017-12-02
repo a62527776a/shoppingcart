@@ -30,7 +30,7 @@ baseService.interceptors.response.use(response => {
 }, error => {
   store.state.loading = false
   if (error.toString().indexOf('timeout') > -1) {
-    return Promise.reject(error)
+    return Promise.reject(new Error('error'))
   }
   return Promise.reject(error)
 })

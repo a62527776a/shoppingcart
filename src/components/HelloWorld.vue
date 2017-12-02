@@ -145,6 +145,7 @@ export default {
     this.findMvs()
     this.clientHeight = document.documentElement.clientHeight
     this.window = window
+    console.log(this.$store)
   },
   mounted () {
     this.mvsEl = this.$refs.mvs_list

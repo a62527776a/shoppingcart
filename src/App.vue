@@ -35,7 +35,7 @@ export default {
   methods: {
     fixedTab () {
       window.onscroll = () => {
-        this.scrollTop = document.body.scrollTop
+        this.scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         if (!this.$refs.component.mvs) return false
         this.$refs.component.mvs.forEach((item) => {
           if (item.isShow) return false

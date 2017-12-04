@@ -9,12 +9,14 @@ import store from './store'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-carbon.css'
 
-import baseService from './service/index.js'
+import baseService from './service'
+import plugins from './plugins'
 
 Vue.use(MuseUI)
 Vue.config.productionTip = false
 
-Vue.prototype.baseService = baseService
+Vue.prototype.$baseService = baseService
+Vue.prototype.$plugins = plugins
 
 /* eslint-disable no-new */
 new Vue({

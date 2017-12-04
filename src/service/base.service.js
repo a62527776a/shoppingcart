@@ -29,8 +29,8 @@ baseService.interceptors.response.use(response => {
   return response
 }, error => {
   store.state.loading = false
-  if (error.toString().indexOf('timeout') > -1) {
-    return Promise.reject(new Error('error'))
+  if (/timeout/.test(error.message)) {
+    return Promise.reject(new Error('timeout'))
   }
   return Promise.reject(error)
 })

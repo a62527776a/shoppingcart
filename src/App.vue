@@ -1,16 +1,23 @@
 <template>
   <div id="app">
-    <mu-appbar :title="($route.path !== '/' ? (totalPrice === '￥0' ? '' : totalPrice) : '已添加' + mvsLen + '件 ')">
-      <mu-flat-button v-show="mvsLen !== 0" @click="deleteAllMvs" label="清空购物车" slot="right"/>
+    <mu-appbar :title="
+      ($route.path !== '/' ? 
+      ($store.state.mvs.totalPrice === '￥0'
+      ? '' : $store.state.mvs.totalPrice) : 
+      '已添加' + $store.state.mvs.productLen + '件 ')">
+      <mu-flat-button v-show="$store.state.mvs.productLen !== 0" @click="deleteAllMvs" label="清空购物车" slot="right"/>
       <mu-icon-button 
         v-show="$route.path !== '/'" 
         @click="allPick"
         slot="left">
-        <mu-icon :value="isAllPick ? 'favorite' : 'favorite_border'" :color="isAllPick ? '#ff5252' : '#FFF'"/>
+        <mu-icon 
+          :value="$store.state.mvs.isAllPick ? 'favorite' : 'favorite_border'" 
+          :color="$store.state.mvs.isAllPick ? '#ff5252' : '#FFF'"/>
       </mu-icon-button>
     </mu-appbar>
       <div style="height: 56px" v-if="scrollTop > 56"></div>
-      <mu-tabs :class="{ 'fixedTab' : scrollTop > 56 }" :value="$route.path === '/' ? 'tab1' : 'tab2' ">
+      <mu-tabs :class="{ 'fixedTab' : scrollTop > 56 }" 
+               :value="$route.path === '/' ? 'tab1' : 'tab2' ">
         <mu-tab @click="$router.push('/')" value="tab1" title="商品"/>
         <mu-tab @click="$router.push('/shopcart')" value="tab2" title="购物车"/>
       </mu-tabs>
@@ -57,7 +64,6 @@ export default {
           item.num = 0
         })
         this.totalPrice = '￥0'
-        localStorage.setItem('mvs', JSON.stringify(this.$refs.component.mvs))
       } else {
         this.$refs.component.deleteAllMvs()
       }

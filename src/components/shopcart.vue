@@ -5,9 +5,9 @@
       <mu-flat-button slot="actions" @click="isDialog = false" primary label="取消"/>
       <mu-flat-button slot="actions" primary @click="deleteMv()" label="确定"/>
     </mu-dialog>
-    <a class="tip" v-show="this.$root.$children[0].mvsLen === 0">购物车没有东西，请到列表挑选</a>
+    <a class="tip" v-show="$store.state.mvs.productLen === 0">购物车没有东西，请到列表挑选</a>
     <mu-card 
-      v-for="(item, idx) in $root.$children[0].$children[2].mvs"
+      v-for="(item, idx) in $store.state.mvs.products"
       v-if="item.isAdd"
       :key="idx">
       <mu-card-media 

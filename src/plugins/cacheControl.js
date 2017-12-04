@@ -1,3 +1,5 @@
+// 处理缓存 以及控制超时时间
+
 export default {
   /**
    * @param { String } key 缓存ID 根据该值设置缓存

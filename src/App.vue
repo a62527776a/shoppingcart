@@ -3,11 +3,15 @@
     <mu-appbar :title="
       ($route.path !== '/' ? 
       ($store.state.mvs.totalPrice === '￥0'
-      ? '' : $store.state.mvs.totalPrice) : 
+      ? '' : '￥' + $plugins.filtersPrice($store.state.mvs.totalPrice).toString()) : 
       '已添加' + $store.state.mvs.productLen + '件 ')">
-      <mu-flat-button v-show="$store.state.mvs.productLen !== 0" @click="deleteAllMvs" label="清空购物车" slot="right"/>
+      <mu-flat-button 
+        v-show="$store.state.mvs.productLen !== 0" 
+        @click="deleteAllShopcart" 
+        label="清空购物车" 
+        slot="right"/>
       <mu-icon-button 
-        v-show="$route.path !== '/'" 
+        v-show="$route.path !== '/' && $store.state.mvs.productLen !== 0" 
         @click="allPick"
         slot="left">
         <mu-icon 
@@ -33,44 +37,31 @@ export default {
   data () {
     return {
       scrollTop: 0,
-      activeTab: 'tab1',
-      totalPrice: '',
-      isAllPick: false,
-      mvsLen: 0
+      activeTab: 'tab1'
     }
   },
   methods: {
     fixedTab () {
       window.onscroll = () => {
+        // 处理dom元素距离页面顶部高度
         this.scrollTop = document.body.scrollTop || document.documentElement.scrollTop
-        if (!this.$refs.component.mvs) return false
-        this.$refs.component.mvs.forEach((item) => {
+        // 只处理商品列表
+        if (this.$route.path !== '/') return false
+        this.$store.state.mvs.products.forEach((item) => {
           if (item.isShow) return false
           if (this.$refs.component.clientHeight + this.scrollTop > item.scrollTop) item.isShow = true
         })
       }
     },
     allPick () {
-      this.isAllPick = !this.isAllPick
-      this.$refs.component.allPick(this.isAllPick)
+      this.$store.commit('ALLPICK')
+      // 根据全选/全不选状态来判断是否需要计算总价 如果是全不选 则直接赋值
+      this.$store.state.mvs.isAllPick ? this.$store.commit('COUNTPRICE') : this.$store.state.mvs.totalPrice = 0
     },
-    deleteAllMvs () {
-      this.isAllPick = false
-      this.mvsLen = 0
-      if (this.$refs.component.mvs) {
-        this.$refs.component.mvs.forEach((item) => {
-          item.isAdd = false
-          item.selected = false
-          item.num = 0
-        })
-        this.totalPrice = '￥0'
-      } else {
-        this.$refs.component.deleteAllMvs()
-      }
+    deleteAllShopcart () {
+      this.$store.commit('DELETE_ALL_MVS')
+      this.$store.commit('COUNTPRICE')
     }
-  },
-  created () {
-    this.$router.push('/')
   },
   mounted () {
     this.fixedTab()

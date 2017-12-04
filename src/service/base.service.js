@@ -29,6 +29,7 @@ baseService.interceptors.response.use(response => {
   return response
 }, error => {
   store.state.loading = false
+  // 如果超时 则catch timeout
   if (/timeout/.test(error.message)) {
     return Promise.reject(new Error('timeout'))
   }

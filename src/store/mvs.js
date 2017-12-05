@@ -11,6 +11,7 @@ export const CHANGE_SHOPCART_NUM = 'CHANGE_SHOPCART_NUM' // 改变购物车数�
 export const ALLPICK = 'ALLPICK' // 全选
 export const COUNTPRICE = 'COUNTPRICE' // 计算总价
 export const FIND_MVS_CACHE = 'FIND_MVS_CACHE' // 初始化购物车
+export const CHECK_ISALLPICK = 'CHECK_ISALLPICK' // 检查是否全选
 
 // 删除单个/全部商品
 export const DELETE_MV = 'DELETE_MV'
@@ -120,6 +121,16 @@ export default {
       state.products.forEach(item => {
         if (item.isAdd) item.selected = state.isAllPick
       })
+    },
+    // 检查是否被全选
+    [CHECK_ISALLPICK] (state) {
+      let isAllPick = true
+      state.products.forEach(item => {
+        if (item.isAdd && !item.selected) {
+          isAllPick = false
+        }
+      })
+      state.productLen === 0 ? state.isAllPick = false : state.isAllPick = isAllPick
     },
     [DELETE_MV] (state, idx) {
       // 判断是否被选中 被选中则总价减去该商品的价格乘数量

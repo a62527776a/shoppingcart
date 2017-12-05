@@ -65,6 +65,7 @@ export default {
   },
   mounted () {
     this.fixedTab()
+    this.$router.push('/')
   }
 }
 </script>

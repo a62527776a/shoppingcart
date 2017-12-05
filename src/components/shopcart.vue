@@ -66,7 +66,9 @@ export default {
     },
     selected (e, item) {
       item.selected = e
+      // 根据是否选中来增减商品总价
       item.selected ? this.$store.state.mvs.totalPrice += item.num * item.score : this.$store.state.mvs.totalPrice -= item.num * item.score
+      this.$store.commit('CHECK_ISALLPICK')
     }
   },
   activated () {

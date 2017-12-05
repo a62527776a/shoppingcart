@@ -13,7 +13,7 @@
             </mu-icon-button>
           </mu-grid-tile>
         </mu-grid-list>
-        <mu-infinite-scroll :scroller="window" loadingText="" :loading="loading" @load="loadMore" />
+        <mu-infinite-scroll style="margin-top: 10px;" :scroller="window" loadingText="" :loading="loading" @load="loadMore" />
     </div>
   </div>
 </template>
@@ -62,6 +62,7 @@ export default {
     loadMore () {
       // 在数据返回前都处理加载中状态
       this.loading = true
+      if (this.$route.path !== '/') return
       this.$baseService.get(`/top/mv?limit=20&offset=${(this.$store.state.mvs.products.length / 20) + 1}`).then(res => {
         this.$store.commit('LOAD_MORE', res.data)
         this.loopImgsScrollTop()

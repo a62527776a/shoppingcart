@@ -10,23 +10,6 @@
 6. 商品全部/单个删除
 7. reload数据不清空
 
-## 数据来源 
-
-[网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)
-
-```
-$ git clone https://github.com/Binaryify/NeteaseCloudMusicApi
-$ cd NeteaseCloudMusicApi && npm install
-$ npm run start
-```
-
-## 安装 && 运行
-
-```
-$ git clone https://github.com/a62527776a/shoppingcart.git
-$ cd shoppingcart && npm install
-$ npm run dev
-```
 
 ## 目录结构
 
@@ -53,4 +36,22 @@ src
  ├── App.vue
  ├── config.js 常用配置项
  └── main.js 入口文件
+```
+
+## 数据来源 
+
+[网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)
+
+```
+$ git clone https://github.com/Binaryify/NeteaseCloudMusicApi
+$ cd NeteaseCloudMusicApi && npm install
+$ npm run start
+```
+
+## 安装 && 运行
+
+```
+$ git clone https://github.com/a62527776a/shoppingcart.git
+$ cd shoppingcart && npm install
+$ npm run dev
 ```

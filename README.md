@@ -27,3 +27,30 @@ $ git clone https://github.com/a62527776a/shoppingcart.git
 $ cd shoppingcart && npm install
 $ npm run dev
 ```
+
+## 目录结构
+
+```
+src
+ ├── assets 静态资源目录
+ ├── components 页面
+ |   ├── shopcart.vue 购物车页面
+ |   └── shoplist.vue 商品列表
+ ├── plugins 中间件
+ |   ├── index.js
+ |   ├── cacheControl.js 缓存控制
+ |   └── filters.js 千分位过滤器
+ ├── router 路由
+ |   └── index.js
+ ├── service ajax请求封装
+ |   ├── base.service.js ajax请求封装
+ |   └── index.js
+ ├── store vuex 状态管理
+ |   ├── data 数据类
+ |   |   └── index.js
+ |   ├── mvs.js 商品类的状态管理 包括常用的CURD操作和一系列业务操作
+ |   └── index.js
+ ├── App.vue
+ ├── config.js 常用配置项
+ └── main.js 入口文件
+```
